@@ -15,29 +15,28 @@
     CAEAGLLayer *_eaglLayer;
     EAGLContext *_context;
     GLuint _colorRenderBuffer;
-    GLuint _positionAttribute;
-    GLuint _sourceColorAttribute;
-    GLuint _projectionUniform;
-    GLuint _viewUniform;
-    GLuint _modelUniform;
-    GLuint _modelViewUniform;
-    float _currentRotation;
+//    GLuint _positionAttribute;
+//    GLuint _sourceColorAttribute;
+//    GLuint _projectionUniform;
+//    GLuint _viewUniform;
+//    GLuint _modelUniform;
+//    GLuint _modelViewUniform;
+//    float _currentRotation;
     GLuint _depthRenderBuffer;
-    GLuint _floorTexture;
-    GLuint _fishTexture;
-    GLuint _texCoordSlot;
-    GLuint _textureUniform;
+//    GLuint _floorTexture;
+//    GLuint _fishTexture;
+//    GLuint _texCoordSlot;
+//    GLuint _textureUniform;
     
     GLuint _vertexBuffer;
     GLuint _indexBuffer;
     GLuint _vertexBuffer2;
     GLuint _indexBuffer2;
     
-    GLuint _vao;
-    
-    NSMutableArray *_gameObjects;
-    
     double _frameTimeStamp;
 }
+
+@property NSMutableArray *shaders;
+@property NSMutableArray *gameObjects;
 
 @end

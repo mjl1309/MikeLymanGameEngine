@@ -10,6 +10,7 @@
 #import <GLKit/GLKMath.h>
 #import "ObjectRenderer.h"
 #import "GameObject.h"
+#import "ShaderInfoObject.h"
 
 
 @implementation OpenGLView
@@ -24,13 +25,17 @@
         [self setupDepthBuffer]; // not sure why this needs to happen first
         [self setupRenderBuffer];
         [self setupFrameBuffer];
-        GLuint shaderProgramUniform = [self compileShaders];
+        
         [self setupDisplayLink];
 
+        // ** Shaders ** //
+        self.shaders = [NSMutableArray array];
+        [self.shaders addObject: [[ShaderInfoObject alloc] init] ];
         
+        // ** Game Objects ** //
         _gameObjects = [NSMutableArray array];
         for (int i=0; i<20; i++) {
-            GameObject *newGameObject = [[GameObject alloc] initWithTEMP:_modelUniform TEMP:shaderProgramUniform];
+            GameObject *newGameObject = [[GameObject alloc] initWithShaderInfo:self.shaders[0]];
             [_gameObjects addObject:newGameObject];
         }
         _frameTimeStamp = 0.0;
@@ -91,48 +96,24 @@
     glEnable( GL_DEPTH_TEST );
 
     
+    // TEMP HARD CODED
+    ShaderInfoObject* shader = [self.shaders objectAtIndex:0];
+    
     GLKMatrix4 projectionMatrix = GLKMatrix4Identity;
     float h = 4.0f * self.frame.size.height / self.frame.size.width;
     projectionMatrix = GLKMatrix4MakeFrustum(-2, 2, -h/2, h/2, 4, 100);
-    glUniformMatrix4fv( _projectionUniform, 1, 0, projectionMatrix.m );
+    glUniformMatrix4fv( shader.projectionUniform, 1, 0, projectionMatrix.m );
 
     GLKMatrix4 viewMatrix = GLKMatrix4Identity;
-    glUniformMatrix4fv( _viewUniform, 1, 0, viewMatrix.m );
-
-//    GLKMatrix4 modelView = GLKMatrix4Identity;
-//    modelView = GLKMatrix4MakeTranslation(sin(CACurrentMediaTime()), 0, -7);
-//    _currentRotation += displayLink.duration;
-//    modelView = GLKMatrix4Rotate(modelView, _currentRotation, 1, 0, 0);
-//    glUniformMatrix4fv( _modelViewUniform, 1, 0, modelView.m );
+    glUniformMatrix4fv( shader.viewUniform, 1, 0, viewMatrix.m );
     
     for ( GameObject *gameObject in _gameObjects ) {
         glViewport(0, 0, self.frame.size.width, self.frame.size.height);
-//        glBindVertexArray( renderObject.vao );
-//        modelView = GLKMatrix4Multiply(viewMatrix, renderObject.modelMatrix);
-//        glUniformMatrix4fv( _modelViewUniform, 1, 0, modelView.m );
         [gameObject.renderer drawObject];
-//        glDrawArrays(GL_TRIANGLES, 0, numVerticesTetrahedron );
     }
-
-    
-    // Pass the shader the model view matrix
-//        glUniformMatrix4fv( _modelViewUniform, 1, 0, modelView.m );
-    
-    // draw to the whole window
-
-    
-    // Use the vao
-//    glBindVertexArray( _vao );
-    
-//    glDrawArrays( GL_TRIANGLES, 0, numVerticesTetrahedron );
-    
-    // glBindVertexArray(0)
     
     [ _context presentRenderbuffer:GL_RENDERBUFFER ];
-//    [ _context presentRenderbuffer:GL_ARRAY_BUFFER ];
-    
     [self checkOpenGlError];
-
 }
 
 - (void)setupDisplayLink {
@@ -203,61 +184,6 @@
 }
 */
 
-- (GLuint)compileShader:(NSString*)shaderName withType:(GLenum)shaderType {
-    NSString* shaderPath = [[NSBundle mainBundle] pathForResource:shaderName ofType:@"glsl"];
-    NSError* error;
-    NSString* shaderProgramString = [NSString stringWithContentsOfFile:shaderPath encoding:NSUTF8StringEncoding error:&error];
-    if ( !shaderProgramString ) {
-        NSLog( @"Error loading shader: %@", error.localizedDescription );
-        exit(1);
-    }
-    GLuint shaderHandle = glCreateShader( shaderType );
-    const char *shaderStringUTF8 = [shaderProgramString UTF8String];
-    int shaderStringLength = [shaderProgramString length];
-    glShaderSource(shaderHandle, 1, &shaderStringUTF8, &shaderStringLength);
-    glCompileShader(shaderHandle);
-    GLint compileSuccess;
-    glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &compileSuccess);
-    if ( compileSuccess == GL_FALSE ) {
-        GLchar messages[256];
-        glGetShaderInfoLog(shaderHandle, sizeof(messages), 0, &messages[0]);
-        NSString *messageString = [NSString stringWithUTF8String:messages];
-        NSLog( @"%@", messageString );
-        exit(1);
-    }
-    return shaderHandle;
-}
-
-- (GLuint)compileShaders {
-    GLuint vertexShader = [self compileShader:@"VertexShader" withType:GL_VERTEX_SHADER];
-    GLuint fragmentShader = [self compileShader:@"FragmentShader" withType:GL_FRAGMENT_SHADER];
-    GLuint programHandle = glCreateProgram();
-    glAttachShader(programHandle, vertexShader);
-    glAttachShader(programHandle, fragmentShader);
-    glLinkProgram(programHandle);
-    GLint linkSuccess;
-    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
-    if ( linkSuccess == GL_FALSE ) {
-        GLchar messages[256];
-        glGetProgramInfoLog(programHandle, sizeof(messages), 0, &messages[0]);
-        NSString *messageString = [NSString stringWithUTF8String:messages];
-        NSLog( @"%@", messageString );
-        exit(1);
-    }
-    glUseProgram( programHandle );
-    _positionAttribute = glGetAttribLocation( programHandle, "position" );
-    _sourceColorAttribute = glGetAttribLocation( programHandle, "sourceColor" );
-    _projectionUniform = glGetUniformLocation( programHandle, "projection" );
-    _viewUniform = glGetUniformLocation( programHandle, "view" );
-    _modelUniform = glGetUniformLocation( programHandle, "model" );
-//    _modelViewUniform = glGetUniformLocation( programHandle, "modelView" );
-    glEnableVertexAttribArray( _positionAttribute );
-    glEnableVertexAttribArray( _sourceColorAttribute );
-//    _texCoordSlot = glGetAttribLocation( programHandle, "texCoordIn" );
-//    glEnableVertexAttribArray( _texCoordSlot );
-//    _textureUniform = glGetUniformLocation( programHandle, "texture" );
-    return programHandle;
-}
 
 
 

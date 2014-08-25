@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 @class PhysicsBody;
 @class ObjectRenderer;
+@class ShaderInfoObject;
 
 @interface GameObject : NSObject {
     
@@ -17,8 +18,7 @@
 @property PhysicsBody *physicsBody;
 @property ObjectRenderer *renderer;
 
-- (id)initWithTEMP:(GLuint)modelUniform
-              TEMP:(GLuint)shaderProgram;
+- (id)initWithShaderInfo:(ShaderInfoObject*)shaderInfo;
 
 - (void)update:(float)dt;
 

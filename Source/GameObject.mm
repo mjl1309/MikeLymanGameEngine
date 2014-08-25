@@ -10,6 +10,7 @@
 #import <GLKit/GLKMath.h>
 #import "ObjectRenderer.h"
 #import "PhysicsBody.h"
+#import "ShaderInfoObject.h"
 
 GLKVector4 vertex_colors[9] = {
     { 0.0, 0.0, 0.0, 1.0 },  // black 0
@@ -66,12 +67,11 @@ GLKVector4 colorsTetrahedron[ 12 ] = {
 @implementation GameObject
 
 
-- (id)initWithTEMP:(GLuint)modelUniform
-              TEMP:(GLuint)shaderProgram {
+- (id)initWithShaderInfo:(ShaderInfoObject*)shaderInfo {
     self = [super init];
     if ( self ) {
-        self.renderer = [[ObjectRenderer alloc] initWithModelUniform:modelUniform];
-        [self.renderer createVaoWithShaderProgram:shaderProgram points:pointsTetrahedron colors:colorsTetrahedron numVertices:numVerticesTetrahedron];
+        self.renderer = [[ObjectRenderer alloc] initWithModelUniform:shaderInfo.modelUniform];
+        [self.renderer createVaoWithShaderProgram:shaderInfo.shaderUniform points:pointsTetrahedron colors:colorsTetrahedron numVertices:numVerticesTetrahedron];
         
         GLKVector4 position = GLKVector4Make( -10.0f + arc4random_uniform(20), 10.0f + arc4random_uniform(5), -20.0f, 0.0f);
         GLKVector4 velocity = GLKVector4Make(0.0f, -2.0f, 0.0f, 1.0f);
