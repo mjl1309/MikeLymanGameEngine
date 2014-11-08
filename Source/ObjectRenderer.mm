@@ -45,6 +45,11 @@
 
 GLuint createVao( GLuint shaderProgram, GLKVector4 points[], GLKVector4 colors[], int numVertices )
 {
+    if ( numVertices == 240 ) {
+        for ( int i=0; i<numVertices; i++) {
+            NSLog(@"v: %f, %f, %f, %f", points[i].x,points[i].y,points[i].z,points[i].w);
+        }
+    }
     // Grab a new VAO
     GLuint vao;
     // openGL returns 1 free array 'name' to us inside vertexArrayObject. Using 0 resets all vertex arrays

@@ -13,6 +13,7 @@
 		2716EBEA19A18E4C0004E425 /* ShaderInfoObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2716EBE919A18E4C0004E425 /* ShaderInfoObject.mm */; };
 		273BA3E719B0077800DA5812 /* Boid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 273BA3E619B0077800DA5812 /* Boid.mm */; };
 		2797EAC419944F6000EBE7F7 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2797EAC319944F6000EBE7F7 /* GLKit.framework */; };
+		27B213DC1A0EB498006C02F9 /* Plane.mm in Sources */ = {isa = PBXBuildFile; fileRef = 27B213DB1A0EB498006C02F9 /* Plane.mm */; };
 		27F499E7182AD8B700B0FF4F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F499E6182AD8B700B0FF4F /* Foundation.framework */; };
 		27F499E9182AD8B700B0FF4F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F499E8182AD8B700B0FF4F /* CoreGraphics.framework */; };
 		27F499EB182AD8B700B0FF4F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27F499EA182AD8B700B0FF4F /* UIKit.framework */; };
@@ -39,6 +40,8 @@
 		273BA3E519B0077800DA5812 /* Boid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boid.h; sourceTree = "<group>"; };
 		273BA3E619B0077800DA5812 /* Boid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Boid.mm; sourceTree = "<group>"; };
 		2797EAC319944F6000EBE7F7 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		27B213DA1A0EB498006C02F9 /* Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
+		27B213DB1A0EB498006C02F9 /* Plane.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Plane.mm; sourceTree = "<group>"; };
 		27F499E3182AD8B700B0FF4F /* MikeLymanGameEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MikeLymanGameEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F499E6182AD8B700B0FF4F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		27F499E8182AD8B700B0FF4F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -127,6 +130,8 @@
 				2716EBE919A18E4C0004E425 /* ShaderInfoObject.mm */,
 				270946F51999C4BC0017C2CA /* GameObject.h */,
 				270946F61999C4BC0017C2CA /* GameObject.mm */,
+				27B213DA1A0EB498006C02F9 /* Plane.h */,
+				27B213DB1A0EB498006C02F9 /* Plane.mm */,
 				273BA3E519B0077800DA5812 /* Boid.h */,
 				273BA3E619B0077800DA5812 /* Boid.mm */,
 				270946F21999C0E50017C2CA /* PhysicsBody.h */,
@@ -225,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B213DC1A0EB498006C02F9 /* Plane.mm in Sources */,
 				271680D619969B39009A089A /* ObjectRenderer.mm in Sources */,
 				27F499F7182AD8B700B0FF4F /* boidsAppDelegate.m in Sources */,
 				2716EBEA19A18E4C0004E425 /* ShaderInfoObject.mm in Sources */,

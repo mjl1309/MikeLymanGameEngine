@@ -11,7 +11,9 @@
 #import "ObjectRenderer.h"
 #import "GameObject.h"
 #import "ShaderInfoObject.h"
+#import "PhysicsBody.h"
 #import "Boid.h"
+#import "Plane.h"
 
 
 @implementation OpenGLView
@@ -35,12 +37,20 @@
         
         // ** Game Objects ** //
         _gameObjects = [NSMutableArray array];
-        for (int i=0; i<10; i++) {
-//            GameObject *newGameObject = [[GameObject alloc] initWithShaderInfo:self.shaders[0]];
-//            [_gameObjects addObject:newGameObject];
-            Boid *newBoid = [[Boid alloc] initWithShaderInfo:self.shaders[0]];
-            [_gameObjects addObject:newBoid];
-        }
+//        for (int i=0; i<10; i++) {
+//            Boid *newBoid = [[Boid alloc] initWithShaderInfo:self.shaders[0]];
+//            [_gameObjects addObject:newBoid];
+//        }
+        Boid *b1 = [[Boid alloc]initWithShaderInfo:self.shaders[0]];
+        b1.physicsBody.position = GLKVector4Make(-5, -5, -20, 0);
+        Boid *b2 = [[Boid alloc]initWithShaderInfo:self.shaders[0]];
+        b2.physicsBody.position = GLKVector4Make(3, 3, -10, 0);
+        [_gameObjects addObject:b1];
+        [_gameObjects addObject:b2];
+        
+        Plane *p = [[Plane alloc] initWithShaderInfo:self.shaders[0]];
+        [_gameObjects addObject:p];
+        
         _frameTimeStamp = 0.0;
     }
     return self;
@@ -92,13 +102,13 @@
 
 
 - (void)renderVao:(CADisplayLink*)displayLink {
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glClearColor( 0.0f, 104.0f/255.0f, 55.0f/255.0f, 1.0f );
 //        glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glEnable( GL_DEPTH_TEST );
-    glEnable( GL_CULL_FACE );
+//    glEnable( GL_CULL_FACE );
 
     
     // TEMP HARD CODED

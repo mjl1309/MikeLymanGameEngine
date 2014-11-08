@@ -73,14 +73,14 @@ static GLKVector4 colors[ 12 ] = {
 - (id)initWithShaderInfo:(ShaderInfoObject*)shaderInfo {
     self = [super init];
     if ( self ) {
-        self.renderer = [[ObjectRenderer alloc] initWithModelUniform:shaderInfo.modelUniform];
-        [self.renderer createVaoWithShaderProgram:shaderInfo.shaderUniform points:vertices colors:colors numVertices:numVertices];
-        
-        GLKVector4 position = GLKVector4Make( -10.0f + arc4random_uniform(20), 10.0f + arc4random_uniform(5), -20.0f, 0.0f);
-        GLKVector4 velocity = GLKVector4Make(0.0f, -2.0f, 0.0f, 1.0f);
-        GLKVector4 acceleration = GLKVector4Make(0.0f, -0.0f, 0.0f, 1.0f);
-        float mass = 1.0f;
-        self.physicsBody = [[PhysicsBody alloc] initWithPosition:position velocity:velocity acceleration:acceleration mass:mass];
+//        self.renderer = [[ObjectRenderer alloc] initWithModelUniform:shaderInfo.modelUniform];
+//        [self.renderer createVaoWithShaderProgram:shaderInfo.shaderUniform points:vertices colors:colors numVertices:numVertices];
+//        
+//        GLKVector4 position = GLKVector4Make( -10.0f + arc4random_uniform(20), 10.0f + arc4random_uniform(5), -20.0f, 0.0f);
+//        GLKVector4 velocity = GLKVector4Make(0.0f, -2.0f, 0.0f, 1.0f);
+//        GLKVector4 acceleration = GLKVector4Make(0.0f, -0.0f, 0.0f, 1.0f);
+//        float mass = 1.0f;
+//        self.physicsBody = [[PhysicsBody alloc] initWithPosition:position velocity:velocity acceleration:acceleration mass:mass];
     }
     return self;
 }
