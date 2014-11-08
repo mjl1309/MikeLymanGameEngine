@@ -26,12 +26,8 @@
                                              -20.0f,
                                              0.0f);
         
-        self.rotationVector = GLKVector4Make( ((float)arc4random() / ARC4RANDOM_MAX),
-                                             ((float)arc4random() / ARC4RANDOM_MAX),
-                                              ((float)arc4random() / ARC4RANDOM_MAX),
-                                             
-                                               1.0f);
-        self.rotationAmount = arc4random() % 360;
+        self.rotationVector = GLKVector4Make( 1.0f, 1.0f, 1.0f, 1.0f);
+        self.rotationAmount = 0;
     }
     return self;
 }
@@ -60,13 +56,18 @@ GLuint createVao( GLuint shaderProgram, GLKVector4 points[], GLKVector4 colors[]
     glGenBuffers( 1, &bufferObject );
     glBindBuffer( GL_ARRAY_BUFFER, bufferObject );
     
-    int sizeOfPointsAndColors = sizeof( GLfloat ) * 4 * numVertices * 2;
     int sizeOfPoints = sizeof( GLfloat ) * 4 * numVertices;
+    int sizeOfNormals = sizeof( GLfloat) * 4 * numVertices;
+    int bufferSize = sizeOfPoints * 2 + sizeOfNormals;
     
-    glBufferData( GL_ARRAY_BUFFER, sizeOfPointsAndColors, NULL, GL_DYNAMIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, bufferSize, NULL, GL_DYNAMIC_DRAW );
+    
+    // Generate normals based on vertices
+    GLKVector4* normals = generateNormals(points, numVertices);
     
     glBufferSubData( GL_ARRAY_BUFFER, 0, sizeOfPoints, points );
     glBufferSubData( GL_ARRAY_BUFFER, sizeOfPoints, sizeOfPoints, colors );
+    glBufferSubData( GL_ARRAY_BUFFER, sizeOfPoints * 2, sizeOfNormals, normals);
     
     GLuint vPositionUniform = glGetAttribLocation( shaderProgram, "position" );
     glEnableVertexAttribArray( vPositionUniform );
@@ -76,16 +77,38 @@ GLuint createVao( GLuint shaderProgram, GLKVector4 points[], GLKVector4 colors[]
     glEnableVertexAttribArray( vColorUniform );
     glVertexAttribPointer( vColorUniform, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET( sizeOfPoints ) );
     
+    GLuint vNormalAttrib = glGetAttribLocation( shaderProgram, "normal" );
+    glEnableVertexAttribArray( vNormalAttrib );
+    glVertexAttribPointer( vNormalAttrib, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPoints * 2));
+    
     glBindVertexArray(0);
     return vao;
 }
+
+// Generates normals based on vertices passed in. Assumes that every 3 vertices are used only once for a single triangle.
+GLKVector4* generateNormals( GLKVector4 points[], int numPoints ) {
+    GLKVector4 *normals = new GLKVector4[numPoints];
+    int normalIndex = 0;
+    for (int i=0; i<numPoints; i+=3) {
+        GLKVector4 u = GLKVector4Make(points[i+1].x - points[i].x, points[i+1].y - points[i].y, points[i+1].z - points[i].z, 1.0);
+        GLKVector4 v = GLKVector4Make(points[i+2].x - points[i].x, points[i+2].y - points[i].y, points[i+2].z - points[i].z, 1.0);
+        GLKVector4 n = GLKVector4CrossProduct(u, v);
+        n = GLKVector4Normalize(n);
+        normals[normalIndex] = n;
+        normals[normalIndex+1] = n;
+        normals[normalIndex+2] = n;
+        normalIndex+=3;
+    }
+    return normals;
+}
+
 
 - (void)updateWithTime:(float)dt
            physicsBody:(PhysicsBody*)body {
     
     self.positionVector = body.position;
 
-    self.rotationAmount += dt;
+//    self.rotationAmount += dt;
     
     GLKMatrix4 translation = GLKMatrix4MakeTranslation(self.positionVector.x,
                                                        self.positionVector.y,

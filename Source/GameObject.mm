@@ -12,7 +12,12 @@
 #import "PhysicsBody.h"
 #import "ShaderInfoObject.h"
 
-GLKVector4 vertex_colors[9] = {
+
+@implementation GameObject {
+    
+}
+
+static GLKVector4 vertex_colors[9] = {
     { 0.0, 0.0, 0.0, 1.0 },  // black 0
     { 1.0, 0.0, 0.0, 1.0 },  // red 1
     { 1.0, 1.0, 0.0, 1.0 },  // yellow 2
@@ -25,8 +30,8 @@ GLKVector4 vertex_colors[9] = {
 };
 
 // Tetrahedron (4 sides)
-const int numVerticesTetrahedron = 12;
-GLKVector4 pointsTetrahedron[ 12 ] = {
+static const int numVertices = 12;
+static GLKVector4 vertices[ 12 ] = {
 	// face 0
 	{ -1.0, -1.0, -1.0, 1.0 },
 	{ 1.0, -1.0, 0.0, 1.0 },
@@ -45,7 +50,7 @@ GLKVector4 pointsTetrahedron[ 12 ] = {
 	{ -1.0, -1.0, 1.0, 1.0 }
 };
 
-GLKVector4 colorsTetrahedron[ 12 ] = {
+static GLKVector4 colors[ 12 ] = {
 	vertex_colors[1],
 	vertex_colors[1],
 	vertex_colors[1],
@@ -64,14 +69,12 @@ GLKVector4 colorsTetrahedron[ 12 ] = {
 };
 
 
-@implementation GameObject
-
 
 - (id)initWithShaderInfo:(ShaderInfoObject*)shaderInfo {
     self = [super init];
     if ( self ) {
         self.renderer = [[ObjectRenderer alloc] initWithModelUniform:shaderInfo.modelUniform];
-        [self.renderer createVaoWithShaderProgram:shaderInfo.shaderUniform points:pointsTetrahedron colors:colorsTetrahedron numVertices:numVerticesTetrahedron];
+        [self.renderer createVaoWithShaderProgram:shaderInfo.shaderUniform points:vertices colors:colors numVertices:numVertices];
         
         GLKVector4 position = GLKVector4Make( -10.0f + arc4random_uniform(20), 10.0f + arc4random_uniform(5), -20.0f, 0.0f);
         GLKVector4 velocity = GLKVector4Make(0.0f, -2.0f, 0.0f, 1.0f);

@@ -11,6 +11,7 @@
 #import "ObjectRenderer.h"
 #import "GameObject.h"
 #import "ShaderInfoObject.h"
+#import "Boid.h"
 
 
 @implementation OpenGLView
@@ -34,9 +35,11 @@
         
         // ** Game Objects ** //
         _gameObjects = [NSMutableArray array];
-        for (int i=0; i<20; i++) {
-            GameObject *newGameObject = [[GameObject alloc] initWithShaderInfo:self.shaders[0]];
-            [_gameObjects addObject:newGameObject];
+        for (int i=0; i<10; i++) {
+//            GameObject *newGameObject = [[GameObject alloc] initWithShaderInfo:self.shaders[0]];
+//            [_gameObjects addObject:newGameObject];
+            Boid *newBoid = [[Boid alloc] initWithShaderInfo:self.shaders[0]];
+            [_gameObjects addObject:newBoid];
         }
         _frameTimeStamp = 0.0;
     }
@@ -92,12 +95,18 @@
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glClearColor( 0.0f, 104.0f/255.0f, 55.0f/255.0f, 1.0f );
+//        glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glEnable( GL_DEPTH_TEST );
+    glEnable( GL_CULL_FACE );
 
     
     // TEMP HARD CODED
     ShaderInfoObject* shader = [self.shaders objectAtIndex:0];
+    
+    // Lighting
+//    glUniform3f(shader.lightDirectionUniform, sin(_frameTimeStamp), -0.0f, -1.0f);
+    glUniform3f(shader.lightDirectionUniform, 0.0f, 0.0f, -1.0f);
     
     GLKMatrix4 projectionMatrix = GLKMatrix4Identity;
     float h = 4.0f * self.frame.size.height / self.frame.size.width;

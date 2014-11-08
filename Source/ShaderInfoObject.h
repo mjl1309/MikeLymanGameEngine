@@ -21,5 +21,9 @@
 @property GLuint projectionUniform;
 @property GLuint positionAttribute;
 @property GLuint sourceColorAttribute;
+@property GLuint normalAttribute;
+
+//temporary
+@property GLuint lightDirectionUniform;
 
 @end

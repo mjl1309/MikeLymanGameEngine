@@ -62,9 +62,11 @@
     glUseProgram( programHandle );
     self.positionAttribute = glGetAttribLocation( programHandle, "position" );
     self.sourceColorAttribute = glGetAttribLocation( programHandle, "sourceColor" );
+    self.normalAttribute = glGetAttribLocation( programHandle, "normal" );
     self.projectionUniform = glGetUniformLocation( programHandle, "projection" );
     self.viewUniform = glGetUniformLocation( programHandle, "view" );
     self.modelUniform = glGetUniformLocation( programHandle, "model" );
+    self.lightDirectionUniform = glGetUniformLocation( programHandle, "lightDirection" );
     glEnableVertexAttribArray( _positionAttribute );
     glEnableVertexAttribArray( _sourceColorAttribute );
     //    _texCoordSlot = glGetAttribLocation( programHandle, "texCoordIn" );
