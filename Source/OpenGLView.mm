@@ -114,10 +114,6 @@
     // TEMP HARD CODED
     ShaderInfoObject* shader = [self.shaders objectAtIndex:0];
     
-    // Lighting
-//    glUniform3f(shader.lightDirectionUniform, sin(_frameTimeStamp), -0.0f, -1.0f);
-    glUniform3f(shader.lightDirectionUniform, 0.0f, 0.0f, -1.0f);
-    
     GLKMatrix4 projectionMatrix = GLKMatrix4Identity;
     float h = 4.0f * self.frame.size.height / self.frame.size.width;
     projectionMatrix = GLKMatrix4MakeFrustum(-2, 2, -h/2, h/2, 4, 100);

@@ -23,7 +23,4 @@
 @property GLuint sourceColorAttribute;
 @property GLuint normalAttribute;
 
-//temporary
-@property GLuint lightDirectionUniform;
-
 @end
