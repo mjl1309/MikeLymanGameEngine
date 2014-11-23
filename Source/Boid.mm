@@ -150,7 +150,7 @@ static GLKVector4 colors[ 24 ] = {
 
 - (void)update:(float)dt {
     [super update:dt];
-    self.renderer.rotationAmount += 2 * dt;
+    self.renderer.rotationAmount += 50 * dt;
 }
 
 

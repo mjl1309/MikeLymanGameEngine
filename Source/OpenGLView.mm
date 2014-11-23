@@ -48,8 +48,23 @@
         [_gameObjects addObject:b1];
         [_gameObjects addObject:b2];
         
-        Plane *p = [[Plane alloc] initWithShaderInfo:self.shaders[0]];
-        [_gameObjects addObject:p];
+        Plane *p1 = [[Plane alloc] initWithShaderInfo:self.shaders[0]];
+        p1.physicsBody.position = GLKVector4Make(-2.5, 0.0, -20.0, 0.0);
+        p1.renderer.rotationVector = GLKVector4Make(0.0, 1.0, 0.0, 0.0);
+        p1.renderer.rotationAmount = 0.0f;
+        [_gameObjects addObject:p1];
+        
+        Plane *p2 = [[Plane alloc] initWithShaderInfo:self.shaders[0]];
+        p2.physicsBody.position = GLKVector4Make(-7.5, 0.0, -20.0, 0.0);
+        p2.renderer.rotationVector = GLKVector4Make(0.0, 1.0, 0.0, 0.0);
+        p2.renderer.rotationAmount = 30.0f;
+        [_gameObjects addObject:p2];
+        
+        Plane *p3 = [[Plane alloc] initWithShaderInfo:self.shaders[0]];
+        p3.physicsBody.position = GLKVector4Make(2.5, 0.0, -20.0, 0.0);
+        p3.renderer.rotationVector = GLKVector4Make(0.0, 1.0, 0.0, 0.0);
+        p3.renderer.rotationAmount = -30.0f;
+        [_gameObjects addObject:p3];
         
         _frameTimeStamp = 0.0;
     }
@@ -68,11 +83,16 @@
 }
 
 - (void)setupContext {
-    EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
+    EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES3;
     _context = [[EAGLContext alloc] initWithAPI:api];
     if ( !_context ) {
-        NSLog( @"Failed to initialize OpenGLES context" );
-        exit(1);
+        NSLog( @"Failed to initialize OpenGLES3 context, attempting to use OpenGLES2" );
+        api = kEAGLRenderingAPIOpenGLES2;
+        _context = [[EAGLContext alloc] initWithAPI:api];
+        if ( !_context ) {
+            NSLog( @"Failed to initialize OpenGLES2 context, aborting" );
+            exit(1);
+        }
     }
     if ( ![EAGLContext setCurrentContext:_context] ) {
         NSLog( @"Failed to set current OpenGL context" );

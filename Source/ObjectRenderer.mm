@@ -11,6 +11,12 @@
 #import <GLKit/GLKMath.h>
 #import "PhysicsBody.h"
 
+/** Degrees to Radian **/
+#define degreesToRadians( degrees ) ( ( degrees ) / 180.0 * M_PI )
+
+/** Radians to Degrees **/
+#define radiansToDegrees( radians ) ( ( radians ) * ( 180.0 / M_PI ) )
+
 
 @implementation ObjectRenderer
 
@@ -119,7 +125,7 @@ GLKVector4* generateNormals( GLKVector4 points[], int numPoints ) {
                                                        self.positionVector.y,
                                                        self.positionVector.z);
     
-    GLKMatrix4 rotation = GLKMatrix4MakeRotation(self.rotationAmount,
+    GLKMatrix4 rotation = GLKMatrix4MakeRotation( degreesToRadians( self.rotationAmount ),
                                                  self.rotationVector.x,
                                                  self.rotationVector.y,
                                                  self.rotationVector.z);
